@@ -122,6 +122,9 @@ HelloWorld
 <pre>
 #git clone https://github.com/qdog2012/waf.git
 #cp -a ./waf/waf /usr/local/openresty/nginx/conf/
+#cd /usr/local/openresty/nginx/conf/waf/waf
+cp config.lua.tpa config.lua
+for F in *.rule.tpa ; do cp $F ${F%.tpa};done
 
 修改Nginx的配置文件，加入以下配置。注意路径，同时WAF日志默认存放在/tmp/日期_waf.log
 #WAF
