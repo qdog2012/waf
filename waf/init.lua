@@ -32,7 +32,7 @@ function black_ip_check()
                 if rule ~= "" and rulematch(BLACK_IP,rule,"jo") then
                     log_record('BlackList_IP',ngx.var_request_uri,"_","_")
                     if config_waf_enable == "on" then
-                        ngx.exit(403)
+                        ngx.exit(config_waf_exit_code)
                         return true
                     end
                 end
@@ -69,7 +69,7 @@ function cc_attack_check()
             if req > CCcount then
                 log_record('CC_Attack',ngx.var.request_uri,"-","-")
                 if config_waf_enable == "on" then
-                    ngx.exit(403)
+                    ngx.exit(config_waf_exit_code)
                 end
             else
                 limit:incr(CC_TOKEN,1)

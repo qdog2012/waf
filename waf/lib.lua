@@ -61,7 +61,7 @@ function log_record(method,url,data,ruletag)
                  rule_tag = ruletag,
               }
     local LOG_LINE = cjson.encode(log_json_obj)
-    local LOG_NAME = LOG_PATH..'/'..ngx.today().."_waf.log"
+    local LOG_NAME = LOG_PATH..'/'.."waf_"..ngx.today()..".log"
     local file = io.open(LOG_NAME,"a")
     if file == nil then
         return
@@ -76,9 +76,11 @@ function waf_output()
     if config_waf_output == "redirect" then
         ngx.redirect(config_waf_redirect_url, 301)
     else
-        ngx.header.content_type = "text/html"
-        ngx.status = ngx.HTTP_FORBIDDEN
-        ngx.say(config_output_html)
+	ngx.status = config_waf_exit_code
+	if config_waf_output == "html" then
+        	ngx.header.content_type = "text/html"
+        	ngx.say(config_output_html)
+	end
         ngx.exit(ngx.status)
     end
 end
